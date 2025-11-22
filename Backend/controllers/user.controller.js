@@ -11,7 +11,7 @@ module.exports.registerUser = async (req, res, next) => {
 
   const { fullName, email, password } = req.body;
 
-  const isUserAlreadyExist = userModel.findOne({ email });
+  const isUserAlreadyExist = await userModel.findOne({ email });
   if (isUserAlreadyExist) {
     return res.status(400).json({ message: "user already exist" });
   }
@@ -54,7 +54,7 @@ module.exports.loginUser = async (req, res, next) => {
 
   res.cookie("token", token);
 
-  res.status(201).json({
+  res.status(200).json({
     user,
     token,
   });
