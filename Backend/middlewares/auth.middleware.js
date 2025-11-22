@@ -50,6 +50,6 @@ module.exports.authCaptain = async(req,res,next)=>{
         return next()
     }
     catch(err){
-        return res.status(401).json({message:"hi"})
+        return res.status(401).json({message:"Unauthorized"})
     }
 }
