@@ -3,13 +3,16 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
-  const panelCloseRef = useRef(null)
+  const panelCloseRef = useRef(null);
+  const vehiclePanelRef = useRef(null);
+  const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -19,24 +22,36 @@ const Home = () => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
         height: "70%",
-        padding:24
+        padding: 24,
       });
-      gsap.to(panelCloseRef.current,{
-        opacity:1
-      })
+      gsap.to(panelCloseRef.current, {
+        opacity: 1,
+      });
     } else {
       gsap.to(panelRef.current, {
         height: "0%",
-        padding:0
+        padding: 0,
       });
-      gsap.to(panelCloseRef.current,{
-        opacity:0
-      })
+      gsap.to(panelCloseRef.current, {
+        opacity: 0,
+      });
     }
   }, [panelOpen]);
 
+  useGSAP(() => {
+    if (vehiclePanelOpen) {
+      gsap.to(vehiclePanelRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(vehiclePanelRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [vehiclePanelOpen]);
+
   return (
-    <div className="h-screen relative">
+    <div className="h-screen relative overflow-hidden">
       <img
         src="https://ik.imagekit.io/raosahab/Screenshot_2025-11-22_085343-removebg-preview.png"
         alt=""
@@ -51,8 +66,12 @@ const Home = () => {
       </div>
       <div className=" absolute bottom-0 h-screen w-screen flex flex-col justify-end ">
         <div className="h-[30%] bg-white p-5 w-full relative">
-          <h5 ref={panelCloseRef} onClick={()=>setPanelOpen(false)} className="absolute top-5 right-5 text-2xl opacity-0">
-            <i className="ri-arrow-down-wide-line"></i>
+          <h5
+            ref={panelCloseRef}
+            onClick={() => setPanelOpen(false)}
+            className="absolute top-5 right-5 text-2xl opacity-0"
+          >
+            <i className="ri-arrow-down-wide-line cursor-pointer"></i>
           </h5>
           <h4 className="text-3xl font-semibold">Find a trip</h4>
           <form onSubmit={submitHandler}>
@@ -76,7 +95,16 @@ const Home = () => {
           </form>
         </div>
         <div ref={panelRef} className=" bg-white">
-          <LocationSearchPanel/>
+          <LocationSearchPanel
+            setVehiclePanelOpen={setVehiclePanelOpen}
+            setPanelOpen={setPanelOpen}
+          />
+        </div>
+        <div
+          ref={vehiclePanelRef}
+          className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white"
+        >
+          <VehiclePanel setVehiclePanelOpen={setVehiclePanelOpen} />
         </div>
       </div>
     </div>
