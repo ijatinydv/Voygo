@@ -7,7 +7,7 @@ import gsap from "gsap";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 
 const CaptainHome = () => {
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
 
   const ridePopUpPanelRef = useRef(null);
@@ -46,7 +46,7 @@ const CaptainHome = () => {
           alt=""
         />
         <Link
-          to="/home"
+          to="/captain-home"
           className="h-10 w-10 bg-white flex items-center justify-center rounded-full cursor-pointer"
         >
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
@@ -73,7 +73,7 @@ const CaptainHome = () => {
       </div>
       <div
         ref={confirmRidePopUpPanelRef}
-        className="fixed w-full h-screen z-10 bottom-0 px-3 py-6 pt-12 bg-white"
+        className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
       >
         <ConfirmRidePopUp
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
