@@ -1,6 +1,7 @@
 import React from "react";
 
 const LookingForDriver = (props) => {
+  const vehicleType = props.vehicleType;
   return (
     <div>
       <h5
@@ -23,21 +24,21 @@ const LookingForDriver = (props) => {
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-user-line"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-lg font-medium">{props.pickup}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-fill"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-lg font-medium">{props.destination}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-xl font-medium">₹193.2</h3>
+              <h3 className="text-xl font-medium">
+                ₹{props.fare[vehicleType]}
+              </h3>
               <p className="text-gray-600 text-sm -mt-1">Cash Cash</p>
             </div>
           </div>

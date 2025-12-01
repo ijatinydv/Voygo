@@ -31,21 +31,21 @@ async function getFare(pickup, destination) {
   console.log(distanceTime);
 
   const fare = {
-    auto: (
+    auto: Math.round(
       baseFare.auto +
-      (distanceTime.distance.value * perKmRate.auto) / 1000 +
-      (distanceTime.duration.value * perMinuteRate.auto) / 60
-    ).toFixed(2),
-    car: (
+        (distanceTime.distance.value * perKmRate.auto) / 1000 +
+        (distanceTime.duration.value * perMinuteRate.auto) / 60
+    ),
+    car: Math.round(
       baseFare.car +
-      (distanceTime.distance.value * perKmRate.car) / 1000 +
-      (distanceTime.duration.value * perMinuteRate.car) / 60
-    ).toFixed(2),
-    motorcycle: (
+        (distanceTime.distance.value * perKmRate.car) / 1000 +
+        (distanceTime.duration.value * perMinuteRate.car) / 60
+    ),
+    motorcycle: Math.round(
       baseFare.motorcycle +
-      (distanceTime.distance.value * perKmRate.motorcycle) / 1000 +
-      (distanceTime.duration.value * perMinuteRate.motorcycle) / 60
-    ).toFixed(2),
+        (distanceTime.distance.value * perKmRate.motorcycle) / 1000 +
+        (distanceTime.duration.value * perMinuteRate.motorcycle) / 60
+    ),
   };
   return fare;
 }
