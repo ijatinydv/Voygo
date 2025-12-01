@@ -26,6 +26,7 @@ const Home = () => {
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
+  const [fare, setFare] = useState({});
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -55,7 +56,12 @@ const Home = () => {
   };
 
   const handleDestinationChange = async (e) => {
-    setDestination(e.target.value);
+    const q = e.target.value;
+    setDestination(q);
+    if (!q || q.trim().length <= 2) {
+      setPickupSuggestions([2]);
+      return;
+    }
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
@@ -140,6 +146,20 @@ const Home = () => {
     }
   }, [waitingForDriver]);
 
+  async function findTrip() {
+    setVehiclePanel(true);
+    setPanelOpen(false);
+
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
+      {
+        params: { pickup, destination },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    setFare(response.data);
+  }
+
   return (
     <div className="h-screen relative overflow-hidden">
       <img
@@ -189,6 +209,12 @@ const Home = () => {
               placeholder="Enter your destination"
             />
           </form>
+          <button
+            onClick={findTrip}
+            className="bg-black text-white px-4 py-2 rounded-xl font-medium mt-3 w-full cursor-pointer text-xm"
+          >
+            Find Trip
+          </button>
         </div>
         <div ref={panelRef} className=" bg-white">
           <LocationSearchPanel
@@ -209,6 +235,7 @@ const Home = () => {
           className="fixed w-full z-10 bottom-0 px-3 py-10 pt-12 bg-white"
         >
           <VehiclePanel
+            fare={fare}
             setVehiclePanel={setVehiclePanel}
             setConfirmRidePanel={setConfirmRidePanel}
           />

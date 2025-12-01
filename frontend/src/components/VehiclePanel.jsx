@@ -34,7 +34,7 @@ const VehiclePanel = (props) => {
             Affordable, Premium rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">₹194.2</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.car}</h2>
       </div>
       <div
         className="w-full flex items-center justify-between p-3 border-2 active:border-black border-white rounded-xl mb-2"
@@ -60,7 +60,7 @@ const VehiclePanel = (props) => {
             Affordable, Motorcycle rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">₹65</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.motorcycle}</h2>
       </div>
       <div
         className="w-full flex items-center justify-between p-3 border-2 active:border-black border-white rounded-xl mb-2"
@@ -86,7 +86,7 @@ const VehiclePanel = (props) => {
             Affordable, Auto rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">₹102.2</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.auto}</h2>
       </div>
     </div>
   );
