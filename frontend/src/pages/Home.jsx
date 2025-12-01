@@ -7,6 +7,7 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import axios from "axios";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -17,14 +18,58 @@ const Home = () => {
   const vehiclePanelRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
   const vehicleFoundRef = useRef(null);
-  const waitingForDriverRef = useRef(null)
+  const waitingForDriverRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
-  const [waitingForDriver, setWaitingForDriver] = useState(false)
+  const [waitingForDriver, setWaitingForDriver] = useState(false);
+  const [pickupSuggestions, setPickupSuggestions] = useState([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+  const [activeField, setActiveField] = useState(null);
 
   const submitHandler = (e) => {
     e.preventDefault();
+  };
+
+  const handlePickupChange = async (e) => {
+    const q = e.target.value;
+    setPickup(q);
+    if (!q || q.trim().length <= 2) {
+      setPickupSuggestions([2]);
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
+        {
+          params: { input: e.target.value },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setPickupSuggestions(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDestinationChange = async (e) => {
+    setDestination(e.target.value);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
+        {
+          params: { input: e.target.value },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setDestinationSuggestions(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useGSAP(() => {
@@ -124,16 +169,22 @@ const Home = () => {
             <input
               className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-4"
               value={pickup}
-              onChange={(e) => setPickup(e.target.value)}
-              onClick={() => setPanelOpen(true)}
+              onChange={handlePickupChange}
+              onClick={() => {
+                setPanelOpen(true);
+                setActiveField("pickup");
+              }}
               type="text"
               placeholder="Add a pickup location"
             />
             <input
               className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-4"
               value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              onClick={() => setPanelOpen(true)}
+              onChange={handleDestinationChange}
+              onClick={() => {
+                setPanelOpen(true);
+                setActiveField("destination");
+              }}
               type="text"
               placeholder="Enter your destination"
             />
@@ -141,8 +192,16 @@ const Home = () => {
         </div>
         <div ref={panelRef} className=" bg-white">
           <LocationSearchPanel
+            suggestions={
+              activeField === "pickup"
+                ? pickupSuggestions
+                : destinationSuggestions
+            }
             setVehiclePanel={setVehiclePanel}
             setPanelOpen={setPanelOpen}
+            setPickup={setPickup}
+            setDestination={setDestination}
+            activeField={activeField}
           />
         </div>
         <div
@@ -173,8 +232,14 @@ const Home = () => {
             setVehicleFound={setVehicleFound}
           />
         </div>
-        <div ref={waitingForDriverRef} className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
-          <WaitingForDriver setWaitingForDriver = {setWaitingForDriver} setConfirmRidePanel= {setConfirmRidePanel} />
+        <div
+          ref={waitingForDriverRef}
+          className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
+        >
+          <WaitingForDriver
+            setWaitingForDriver={setWaitingForDriver}
+            setConfirmRidePanel={setConfirmRidePanel}
+          />
         </div>
       </div>
     </div>
