@@ -1,6 +1,8 @@
-import React from "react";
+import React,{useContext} from "react";
+import {captainDataContext} from "../context/CaptainContext"
 
 const CaptainDetails = () => {
+  const {captain} = useContext(captainDataContext)
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
@@ -10,7 +12,7 @@ const CaptainDetails = () => {
             src="https://imgs.search.brave.com/HcOsG-F8M33AfmSy-SRJUOI0agp_YCqYqQXQ53AEOI4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE3/NTMxNDE0Ni9waG90/by95b3VuZy13b21h/bi10YWtpbmctYS1z/ZWxmaWUtaW4tbWV0/cm9wb2xpdGFuLXBh/cmstd2l0aC1hLXZp/ZXctdG8tZmluYW5j/aWFsLWRpc3RyaWN0/LW4tc2FudGlhZ28u/d2VicD9hPTEmYj0x/JnM9NjEyeDYxMiZ3/PTAmaz0yMCZjPS1Z/cFBuSkVYRnR1YmFG/QVVVcVF5NEV3TTZ3/NU9qc3J5RjlqNnd4/VnNvMk09"
             alt=""
           />
-          <h4 className="text-lg font-medium">Raosahabni</h4>
+          <h4 className="text-lg font-medium capitalize">{captain.fullName.firstName + " " + captain.fullName.lastName}</h4>
         </div>
         <div>
           <h5 className="text-xl font-semibold">₹205.12</h5>

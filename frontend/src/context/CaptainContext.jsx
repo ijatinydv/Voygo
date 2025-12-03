@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react'
 export const captainDataContext = createContext()
 
 const CaptainContext = ({children}) => {
-    const [captain, setCaptain] = useState(null)
+    const [captain, setCaptain] = useState({})
 
     const value = {
         captain,

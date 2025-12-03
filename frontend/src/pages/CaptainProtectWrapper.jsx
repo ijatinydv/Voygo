@@ -16,20 +16,24 @@ const CaptainProtectWrapper = ({ children }) => {
     }
   }, [token]);
 
-  axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`,{
-    headers:{
-        Authorization:`Bearer ${token}`
-    }
-  }).then((response)=>{
-    if(response.status===200){
-        setCaptain(response.data.captain)
+  useEffect(() => {
+    if (!token) return;
+    
+    axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((response) => {
+      if (response.status === 200) {
+        setCaptain(response.data)
         setIsLoading(false)
-    }
-  })
-  .catch(err=>{
-    localStorage.removeItem('token')
-    navigate('/captain-login')
-  })
+      }
+    })
+    .catch(err => {
+      localStorage.removeItem('token')
+      navigate('/captain-login')
+    })
+  }, []);
 
   if(isLoading){
     return <div>Loading...</div>

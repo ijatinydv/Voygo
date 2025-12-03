@@ -15,10 +15,6 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
-  const vehiclePanelRef = useRef(null);
-  const confirmRidePanelRef = useRef(null);
-  const vehicleFoundRef = useRef(null);
-  const waitingForDriverRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
@@ -98,54 +94,6 @@ const Home = () => {
       });
     }
   }, [panelOpen]);
-
-  useGSAP(() => {
-    if (vehiclePanel) {
-      gsap.to(vehiclePanelRef.current, {
-        transform: "translateY(0)",
-      });
-    } else {
-      gsap.to(vehiclePanelRef.current, {
-        transform: "translateY(100%)",
-      });
-    }
-  }, [vehiclePanel]);
-
-  useGSAP(() => {
-    if (confirmRidePanel) {
-      gsap.to(confirmRidePanelRef.current, {
-        transform: "translateY(0)",
-      });
-    } else {
-      gsap.to(confirmRidePanelRef.current, {
-        transform: "translateY(100%)",
-      });
-    }
-  }, [confirmRidePanel]);
-
-  useGSAP(() => {
-    if (vehicleFound) {
-      gsap.to(vehicleFoundRef.current, {
-        transform: "translateY(0)",
-      });
-    } else {
-      gsap.to(vehicleFoundRef.current, {
-        transform: "translateY(100%)",
-      });
-    }
-  }, [vehicleFound]);
-
-  useGSAP(() => {
-    if (waitingForDriver) {
-      gsap.to(waitingForDriverRef.current, {
-        transform: "translateY(0)",
-      });
-    } else {
-      gsap.to(waitingForDriverRef.current, {
-        transform: "translateY(100%)",
-      });
-    }
-  }, [waitingForDriver]);
 
   async function findTrip() {
     setVehiclePanel(true);
@@ -246,54 +194,50 @@ const Home = () => {
             activeField={activeField}
           />
         </div>
-        <div
-          ref={vehiclePanelRef}
-          className="fixed w-full z-10 bottom-0 px-3 py-10 pt-12 bg-white"
-        >
-          <VehiclePanel
-            setVehicleType={setVehicleType}
-            fare={fare}
-            setVehiclePanel={setVehiclePanel}
-            setConfirmRidePanel={setConfirmRidePanel}
-          />
-        </div>
-        <div
-          ref={confirmRidePanelRef}
-          className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
-        >
-          <ConfirmRide
-            pickup={pickup}
-            destination={destination}
-            vehicleType={vehicleType}
-            createRide={createRide}
-            fare={fare}
-            setConfirmRidePanel={setConfirmRidePanel}
-            setVehiclePanel={setVehiclePanel}
-            setVehicleFound={setVehicleFound}
-          />
-        </div>
-        <div
-          ref={vehicleFoundRef}
-          className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
-        >
-          <LookingForDriver
-            pickup={pickup}
-            destination={destination}
-            vehicleType={vehicleType}
-            fare={fare}
-            setConfirmRidePanel={setConfirmRidePanel}
-            setVehicleFound={setVehicleFound}
-          />
-        </div>
-        <div
-          ref={waitingForDriverRef}
-          className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
-        >
-          <WaitingForDriver
-            setWaitingForDriver={setWaitingForDriver}
-            setConfirmRidePanel={setConfirmRidePanel}
-          />
-        </div>
+        {vehiclePanel && (
+          <div className="fixed w-full z-10 bottom-0 px-3 py-10 pt-12 bg-white">
+            <VehiclePanel
+              setVehicleType={setVehicleType}
+              fare={fare}
+              setVehiclePanel={setVehiclePanel}
+              setConfirmRidePanel={setConfirmRidePanel}
+            />
+          </div>
+        )}
+        {confirmRidePanel && (
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+            <ConfirmRide
+              pickup={pickup}
+              destination={destination}
+              vehicleType={vehicleType}
+              createRide={createRide}
+              fare={fare}
+              setConfirmRidePanel={setConfirmRidePanel}
+              setVehiclePanel={setVehiclePanel}
+              setVehicleFound={setVehicleFound}
+            />
+          </div>
+        )}
+        {vehicleFound && (
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+            <LookingForDriver
+              pickup={pickup}
+              destination={destination}
+              vehicleType={vehicleType}
+              fare={fare}
+              setConfirmRidePanel={setConfirmRidePanel}
+              setVehicleFound={setVehicleFound}
+            />
+          </div>
+        )}
+        {waitingForDriver && (
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+            <WaitingForDriver
+              setWaitingForDriver={setWaitingForDriver}
+              setConfirmRidePanel={setConfirmRidePanel}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
