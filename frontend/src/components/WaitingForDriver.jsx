@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 const WaitingForDriver = (props) => {
   return (
-     <div>
+    <div>
       <h5
         className="p-1 text-center absolute w-[93%] top-0 cursor-pointer"
         onClick={() => {
@@ -12,12 +12,16 @@ const WaitingForDriver = (props) => {
         <i className="text-3xl text-gray-400 ri-arrow-down-wide-line"></i>
       </h5>
 
-      <div className='flex items-center justify-between'>
-        <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
-        <div className='text-right'>
-            <h2 className='text-lg font-medium'>Jatin Rao</h2>
-            <h4 className='text-xl font-semibold -mt-1 -mb-1'>HR30VM0001</h4>
-            <p className='text-sm text-gray-600'>Fortuner legender</p>
+      <div className="flex items-center justify-between">
+        <img
+          className="h-12"
+          src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg"
+          alt=""
+        />
+        <div className="text-right">
+          <h2 className="text-lg font-medium">Jatin Rao</h2>
+          <h4 className="text-xl font-semibold -mt-1 -mb-1">HR30VM0001</h4>
+          <p className="text-sm text-gray-600">Fortuner legender</p>
         </div>
       </div>
 
@@ -47,7 +51,7 @@ const WaitingForDriver = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WaitingForDriver
+export default WaitingForDriver;

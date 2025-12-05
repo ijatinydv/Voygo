@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
@@ -8,6 +8,8 @@ import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import axios from "axios";
+import { SocketContext } from "../context/SocketContext";
+import { UserDataContext } from "../context/UserContext";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -24,6 +26,21 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
+  const [ride, setRide] = useState(null);
+
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
+
+  useEffect(() => {
+    console.log(user);
+    socket.emit("join", { userId: user._id, userType: "user" });
+  }, [user]);
+
+  socket.on("ride-confirmed", (ride) => {
+    setVehicleFound(false);
+    setWaitingForDriver(true);
+    setRide(ride);
+  });
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -96,8 +113,10 @@ const Home = () => {
   }, [panelOpen]);
 
   async function findTrip() {
-    setVehiclePanel(true);
-    setPanelOpen(false);
+    if (pickup && destination) {
+      setVehiclePanel(true);
+      setPanelOpen(false);
+    }
 
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,

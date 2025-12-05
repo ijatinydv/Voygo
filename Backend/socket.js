@@ -1,0 +1,42 @@
+const socketIo = require("socket.io");
+const userModel = require("./models/user.model");
+const captianModel = require("./models/captain.model");
+
+let io;
+
+function initializeSocket(server) {
+  io = socketIo(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
+
+  io.on("connection", (socket) => {
+    console.log(`Client connected : ${socket.id}`);
+
+    socket.on("join", async (data) => {
+      const { userId, userType } = data;
+      if (userType === "user") {
+        await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
+      } else if (userType === "captain") {
+        await captianModel.findByIdAndUpdate(userId, { socketId: socket.id });
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log(`Client disconnected : ${socket.id}`);
+    });
+  });
+}
+
+const sendMessageToSocketId = (socketId, messageObject) => {
+  console.log(messageObject);
+  if (io) {
+    io.to(socketId).emit(messageObject.event, messageObject.data);
+  } else {
+    console.log("socket is not initialized");
+  }
+};
+
+module.exports = { initializeSocket, sendMessageToSocketId };

@@ -1,20 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const FinishRide = (props) => {
   return (
-     <div>
+    <div>
       <h5
         className="p-1 text-center absolute w-[93%] top-0 cursor-pointer"
         onClick={() => {
-            props.setFinishedRidePanel(false)
+          props.setFinishedRidePanel(false);
         }}
       >
         <i className="text-3xl text-gray-400 ri-arrow-down-wide-line"></i>
       </h5>
-      <h3 className="text-2xl font-semibold mb-5">
-        Finish this ride
-      </h3>
+      <h3 className="text-2xl font-semibold mb-5">Finish this ride</h3>
       <div className="flex items-center justify-between mt-4 p-4 border-2 border-yellow-400 rounded-xl">
         <div className="flex items-center gap-3">
           <img
@@ -50,18 +48,20 @@ const FinishRide = (props) => {
             </div>
           </div>
           <div className="mt-10">
-              <Link
-                to="/captain-home"
-                className="mt-4 w-full flex justify-center items-center bg-green-600 rounded-lg p-2 cursor-pointer text-lg text-white font-semibold"
-              >
-                Finish Ride
-              </Link>
-              <p className='mt-10 text-xs text-gray-600'>Click on finish ride button if you have completed the payment</p>
+            <Link
+              to="/captain-home"
+              className="mt-4 w-full flex justify-center items-center bg-green-600 rounded-lg p-2 cursor-pointer text-lg text-white font-semibold"
+            >
+              Finish Ride
+            </Link>
+            <p className="mt-10 text-xs text-gray-600">
+              Click on finish ride button if you have completed the payment
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FinishRide
+export default FinishRide;
