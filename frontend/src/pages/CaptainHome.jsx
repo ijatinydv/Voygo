@@ -15,12 +15,36 @@ const CaptainHome = () => {
   const ridePopUpPanelRef = useRef(null);
   const confirmRidePopUpPanelRef = useRef(null);
 
-  const {socket} = useContext(SocketContext)
-  const {captain} = useContext(captainDataContext)
+  const [ride, setRide] = useState(null)
 
-  useEffect(()=>{
-    console.log(captain)
-    socket.emit('join',{userId : captain._id, userType: 'captain'})
+  const { socket } = useContext(SocketContext);
+  const { captain } = useContext(captainDataContext);
+
+  useEffect(() => {
+    socket.emit("join", { userId: captain._id, userType: "captain" });
+
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          socket.emit("update-location-captain", {
+            userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+          });
+        });
+      }
+    };
+
+    const locationInterval = setInterval(updateLocation,10000)
+    updateLocation()
+
+  });
+
+  socket.on('new-ride',(data)=>{
+    setRide(data)
+    setRidePopUpPanel(true)
   })
 
   useGSAP(() => {
