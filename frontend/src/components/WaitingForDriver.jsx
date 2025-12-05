@@ -19,32 +19,32 @@ const WaitingForDriver = (props) => {
           alt=""
         />
         <div className="text-right">
-          <h2 className="text-lg font-medium">Jatin Rao</h2>
-          <h4 className="text-xl font-semibold -mt-1 -mb-1">HR30VM0001</h4>
+          <h2 className="text-lg font-medium">{props.ride?.captain.fullName.firstName + " " + props.ride?.captain.fullName.lastName}</h2>
+          <h4 className="text-xl font-semibold -mt-1 -mb-1">{props.ride?.captain.vehicle.plate}</h4>
           <p className="text-sm text-gray-600">Fortuner legender</p>
         </div>
       </div>
+
+      <h1 className="text-2xl font-bold text-center mt-4"> OTP : {props.ride?.otp}</h1>
 
       <div className="flex flex-col justify-between items-center gap-2">
         <div className="w-full mt-5">
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-user-line"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-xl font-medium">{props.ride?.pickup}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-fill"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-xl font-medium">{props.ride?.destination}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-xl font-medium">₹193.2</h3>
+              <h3 className="text-xl font-medium">₹{props.ride?.fare}</h3>
               <p className="text-gray-600 text-sm -mt-1">Cash Cash</p>
             </div>
           </div>

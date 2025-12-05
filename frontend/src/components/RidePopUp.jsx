@@ -1,6 +1,7 @@
 import React from "react";
 
 const RidePopUp = (props) => {
+  console.log("ride prop:", props.ride?.distance);
   return (
     <div>
       <h5
@@ -19,35 +20,37 @@ const RidePopUp = (props) => {
             src="https://imgs.search.brave.com/fwp0gr42Nt9lSYWrHICN3stVnMkBCL8tYerrsIsFleU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTM5/NDgxODA1My9waG90/by95b3VuZy1pbmRp/YW4tZ2lybC1jbGlj/a2luZy1hLXNlbGZp/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9bERxd2lINVYx/ZG5CYk9HSVZlcW56/LVExYW01eG9UU0lo/dWxLdjlySVNYND0"
             alt=""
           />
-          <h2 className="text-lg font-medium">RaoSahabni 2.O</h2>
+          <h2 className="text-lg font-medium">
+            {props.ride?.user.fullName.firstName +
+              " " +
+              props.ride?.user.fullName.lastName}
+          </h2>
         </div>
-        <h5 className="text-lg font-semibold">2.2 KM</h5>
+        <h5 className="text-lg font-semibold">{props.ride?.distance}</h5>
       </div>
       <div className="flex flex-col justify-between items-center gap-2">
         <div className="w-full mt-5">
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-user-line"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-xl font-medium">{props.ride?.pickup}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2 border-b-2 border-gray-200">
             <i className="text-lg ri-map-pin-fill"></i>
             <div>
-              <h3 className="text-xl font-medium">562/11-A</h3>
-              <p className="text-gray-600 text-sm -mt-1">NSP, Delhi</p>
+              <h3 className="text-xl font-medium">{props.ride?.destination}</h3>
             </div>
           </div>
           <div className="flex items-center gap-5 p-2">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-xl font-medium">₹193.2</h3>
+              <h3 className="text-xl font-medium">₹{props.ride?.fare}</h3>
               <p className="text-gray-600 text-sm -mt-1">Cash Cash</p>
             </div>
           </div>
           <button
-            onClick={() => props.setConfirmRidePopUpPanel(true)}
+            onClick={() => props.confirmRide()}
             className="mt-4 w-full bg-green-600 rounded-lg py-2 px-8 cursor-pointer text-lg text-white font-semibold"
           >
             Accept

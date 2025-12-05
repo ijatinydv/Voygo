@@ -7,6 +7,7 @@ import gsap from "gsap";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 import { SocketContext } from "../context/SocketContext";
 import { captainDataContext } from "../context/CaptainContext";
+import axios from "axios";
 
 const CaptainHome = () => {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
@@ -15,7 +16,7 @@ const CaptainHome = () => {
   const ridePopUpPanelRef = useRef(null);
   const confirmRidePopUpPanelRef = useRef(null);
 
-  const [ride, setRide] = useState(null)
+  const [ride, setRide] = useState(null);
 
   const { socket } = useContext(SocketContext);
   const { captain } = useContext(captainDataContext);
@@ -37,15 +38,35 @@ const CaptainHome = () => {
       }
     };
 
-    const locationInterval = setInterval(updateLocation,10000)
-    updateLocation()
-
+    const locationInterval = setInterval(updateLocation, 10000);
+    updateLocation();
   });
 
-  socket.on('new-ride',(data)=>{
-    setRide(data)
-    setRidePopUpPanel(true)
-  })
+  socket.on("new-ride", (data) => {
+    setRide(data);
+    setRidePopUpPanel(true);
+  });
+
+  async function confirmRide() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
+      {
+        rideId: ride._id,
+        captainId: captain._id,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log("Ride confirmed");
+    }
+
+    setRidePopUpPanel(false);
+    setConfirmRidePopUpPanel(true);
+  }
 
   useGSAP(() => {
     if (ridePopUpPanel) {
@@ -101,6 +122,8 @@ const CaptainHome = () => {
         className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
       >
         <RidePopUp
+          ride={ride}
+          confirmRide={confirmRide}
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
         />
@@ -110,6 +133,7 @@ const CaptainHome = () => {
         className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
       >
         <ConfirmRidePopUp
+          ride={ride}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
           setRidePopUpPanel={setRidePopUpPanel}
         />

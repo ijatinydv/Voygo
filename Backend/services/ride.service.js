@@ -83,3 +83,27 @@ module.exports.createRide = async ({
   });
   return ride;
 };
+
+module.exports.confirmRide = async ({ rideId, captainId }) => {
+  if (!rideId) {
+    throw new Error("RideId is required");
+  }
+
+  await rideModel.findOneAndUpdate(
+    {
+      _id: rideId,
+    },
+    {
+      status: "accepted",
+      captain: captainId,
+    }
+  );
+
+  const ride = await rideModel.findOne({ _id: rideId }).populate("user").populate("captain").select("+otp");
+
+  if (!ride) {
+    throw new Error("Ride not found");
+  }
+
+  return ride;
+};

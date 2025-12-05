@@ -251,6 +251,7 @@ const Home = () => {
         {waitingForDriver && (
           <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
             <WaitingForDriver
+              ride={ride}
               setWaitingForDriver={setWaitingForDriver}
               setConfirmRidePanel={setConfirmRidePanel}
             />
