@@ -3,6 +3,7 @@ import gsap from "gsap";
 import React, { useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import FinishRide from "../components/FinishRide";
+import LiveTracking from "../components/LiveTracking";
 
 const CaptainRiding = () => {
   const [finishedRidePanel, setFinishedRidePanel] = useState(false);
@@ -38,11 +39,7 @@ const CaptainRiding = () => {
         </Link>
       </div>
       <div className="h-4/5 w-screen">
-        <img
-          src="https://imgs.search.brave.com/pToz-Wc75oi6k8BWvFknE6YjADNc34pUQQYZlkQ7qqo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9pbWFnZS1tYXAt/c3RyZWV0cy13aXRo/LXRydWNrc18yMDc2/MzQtMjE4MC5qcGc_/c2VtdD1haXNfaHli/cmlk"
-          className="h-full w-full object-cover"
-          alt=""
-        />
+        <LiveTracking />
       </div>
       <div
         className="h-1/5 p-6 flex items-center justify-between bg-yellow-400 relative"

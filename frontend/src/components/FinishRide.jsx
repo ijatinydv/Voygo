@@ -20,7 +20,7 @@ const FinishRide = (props) => {
     if (response.status === 200) {
       props.setFinishedRidePanel(false);
     }
-    navigate("/home");
+    navigate("/captain-home");
   };
   return (
     <div>

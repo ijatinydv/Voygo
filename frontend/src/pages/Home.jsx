@@ -11,6 +11,7 @@ import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -28,6 +29,7 @@ const Home = () => {
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
   const [ride, setRide] = useState(null);
+  const showBranding = !panelOpen;
 
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
@@ -46,7 +48,7 @@ const Home = () => {
 
   socket.on("ride-started", (ride) => {
     setWaitingForDriver(false);
-    Navigate('/riding', { state: { ride } });
+    Navigate("/riding", { state: { ride } });
   });
 
   const submitHandler = (e) => {
@@ -152,20 +154,18 @@ const Home = () => {
 
   return (
     <div className="h-screen relative overflow-hidden">
-      <img
-        src="https://ik.imagekit.io/raosahab/Screenshot_2025-11-22_085343-removebg-preview.png"
-        alt=""
-        className="w-30 absolute left-5 top-5"
-      />
-      <div className="h-screen w-screen">
+      {showBranding && (
         <img
-          src="https://imgs.search.brave.com/pToz-Wc75oi6k8BWvFknE6YjADNc34pUQQYZlkQ7qqo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9pbWFnZS1tYXAt/c3RyZWV0cy13aXRo/LXRydWNrc18yMDc2/MzQtMjE4MC5qcGc_/c2VtdD1haXNfaHli/cmlk"
-          className="h-full w-full object-cover"
-          alt=""
+          src="https://ik.imagekit.io/raosahab/Screenshot_2025-11-22_085343-removebg-preview.png"
+          alt="Voygo"
+          className="w-30 absolute left-5 top-5 z-10 pointer-events-none"
         />
+      )}
+      <div className="h-screen w-screen">
+        <LiveTracking />
       </div>
-      <div className=" absolute bottom-0 h-screen w-screen flex flex-col justify-end ">
-        <div className="h-[30%] bg-white p-5 w-full relative">
+      <div className="absolute bottom-0 h-screen w-screen flex flex-col justify-end pointer-events-none">
+        <div className="h-[30%] bg-white p-5 w-full relative pointer-events-auto">
           <h5
             ref={panelCloseRef}
             onClick={() => setPanelOpen(false)}
@@ -206,7 +206,7 @@ const Home = () => {
             Find Trip
           </button>
         </div>
-        <div ref={panelRef} className=" bg-white">
+        <div ref={panelRef} className="bg-white pointer-events-auto">
           <LocationSearchPanel
             suggestions={
               activeField === "pickup"
@@ -221,7 +221,7 @@ const Home = () => {
           />
         </div>
         {vehiclePanel && (
-          <div className="fixed w-full z-10 bottom-0 px-3 py-10 pt-12 bg-white">
+          <div className="fixed w-full z-10 bottom-0 px-3 py-10 pt-12 bg-white pointer-events-auto">
             <VehiclePanel
               setVehicleType={setVehicleType}
               fare={fare}
@@ -231,7 +231,7 @@ const Home = () => {
           </div>
         )}
         {confirmRidePanel && (
-          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white pointer-events-auto">
             <ConfirmRide
               pickup={pickup}
               destination={destination}
@@ -245,7 +245,7 @@ const Home = () => {
           </div>
         )}
         {vehicleFound && (
-          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white pointer-events-auto">
             <LookingForDriver
               pickup={pickup}
               destination={destination}
@@ -257,7 +257,7 @@ const Home = () => {
           </div>
         )}
         {waitingForDriver && (
-          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white">
+          <div className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white pointer-events-auto">
             <WaitingForDriver
               ride={ride}
               setWaitingForDriver={setWaitingForDriver}

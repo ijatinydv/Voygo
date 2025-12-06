@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/SocketContext";
+import LiveTracking from "./LiveTracking";
 
 const Riding = () => {
   const location = useLocation();
@@ -9,13 +10,18 @@ const Riding = () => {
 
   const navigate = useNavigate();
 
-  const {socket} = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   socket.on("ride-ended", () => {
-    navigate('/home');
+    navigate("/home");
   });
 
   return (
     <div className="h-screen w-screen">
+      <img
+        src="https://ik.imagekit.io/raosahab/Screenshot_2025-11-22_085343-removebg-preview.png"
+        alt="Voygo"
+        className="w-30 absolute left-5 top-5 z-10 pointer-events-none"
+      />
       <Link
         to="/home"
         className="fixed h-10 w-10 bg-white flex items-center justify-center rounded-full right-2 top-2 cursor-pointer"
@@ -23,11 +29,7 @@ const Riding = () => {
         <i className="text-lg font-medium ri-home-line"></i>
       </Link>
       <div className="h-1/2 w-screen">
-        <img
-          src="https://imgs.search.brave.com/pToz-Wc75oi6k8BWvFknE6YjADNc34pUQQYZlkQ7qqo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9pbWFnZS1tYXAt/c3RyZWV0cy13aXRo/LXRydWNrc18yMDc2/MzQtMjE4MC5qcGc_/c2VtdD1haXNfaHli/cmlk"
-          className="h-full w-full object-cover"
-          alt=""
-        />
+        <LiveTracking />
       </div>
       <div className="h-1/2 p-4 flex flex-col justify-between">
         <div className="flex items-center justify-between">
