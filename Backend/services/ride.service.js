@@ -149,3 +149,35 @@ module.exports.startRide = async ({ rideId, otp, captainId }) => {
 
   return ride;
 };
+
+module.exports.endRide = async ({ rideId, captainId }) => {
+  if (!rideId || !captainId) {
+    throw new Error("RideId and CaptainId are required");
+  }
+  const ride = await rideModel
+    .findOne({ _id: rideId })
+    .populate("captain")
+    .populate("user");
+  if (!ride) {
+    throw new Error("Ride not found");
+  }
+
+  if( ride.status !== "ongoing") {
+    throw new Error("Ride is not ongoing");
+  }
+
+  if (ride.captain._id.toString() !== captainId.toString()) {
+    throw new Error("You are not authorized to end this ride");
+  }
+
+  await rideModel.findOneAndUpdate(
+    {
+      _id: rideId,
+    },
+    {
+      status: "completed",
+    }
+  );
+
+  return ride;
+};
