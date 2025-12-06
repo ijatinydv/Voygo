@@ -1,12 +1,14 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import FinishRide from "../components/FinishRide";
 
 const CaptainRiding = () => {
   const [finishedRidePanel, setFinishedRidePanel] = useState(false);
   const finishedRidePanelRef = useRef(null);
+  const location = useLocation();
+  const { ride } = location.state || {};
 
   useGSAP(() => {
     if (finishedRidePanel) {
@@ -61,7 +63,7 @@ const CaptainRiding = () => {
         ref={finishedRidePanelRef}
         className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
       >
-        <FinishRide setFinishedRidePanel={setFinishedRidePanel} />
+        <FinishRide setFinishedRidePanel={setFinishedRidePanel} ride={ride} />
       </div>
     </div>
   );
