@@ -36,7 +36,13 @@ const CaptainProtectWrapper = ({ children }) => {
   }, []);
 
   if(isLoading){
-    return <div>Loading...</div>
+    return (
+      <div className="h-screen w-full md:bg-gray-100 md:flex md:items-center md:justify-center">
+        <div className="w-full h-screen md:w-[375px] md:h-[90vh] md:rounded-2xl md:shadow-2xl md:overflow-hidden bg-white relative flex items-center justify-center">
+          <div>Loading...</div>
+        </div>
+      </div>
+    );
   }
 
   return <>{children}</>;

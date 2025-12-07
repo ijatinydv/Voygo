@@ -94,46 +94,48 @@ const CaptainHome = () => {
   }, [confirmRidePopUpPanel]);
 
   return (
-    <div className="h-screen w-screen">
-      <div className="fixed p-6 top-0 flex justify-between w-full items-center">
-        <img
-          className="w-20"
-          src="https://ik.imagekit.io/raosahab/image-removebg-preview.png"
-          alt=""
-        />
-        <Link
-          to="/captain-home"
-          className="h-10 w-10 bg-white flex items-center justify-center rounded-full cursor-pointer"
+    <div className="h-screen w-full md:bg-gray-100 md:flex md:items-center md:justify-center">
+      <div className="w-full h-screen md:w-[375px] md:h-[90vh] md:rounded-2xl md:shadow-2xl md:overflow-hidden bg-white relative">
+        <div className="absolute p-6 top-0 flex justify-between w-full items-center z-10">
+          <img
+            className="w-20"
+            src="https://ik.imagekit.io/raosahab/image-removebg-preview.png"
+            alt=""
+          />
+          <Link
+            to="/captain-home"
+            className="h-10 w-10 bg-white flex items-center justify-center rounded-full cursor-pointer"
+          >
+            <i className="text-lg font-medium ri-logout-box-r-line"></i>
+          </Link>
+        </div>
+        <div className="h-3/5 w-full">
+          <LiveTracking />
+        </div>
+        <div className="h-2/5 p-6 flex flex-col justify-between">
+          <CaptainDetails />
+        </div>
+        <div
+          ref={ridePopUpPanelRef}
+          className="absolute w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
         >
-          <i className="text-lg font-medium ri-logout-box-r-line"></i>
-        </Link>
-      </div>
-      <div className="h-3/5 w-screen">
-        <LiveTracking />
-      </div>
-      <div className="h-2/5 p-6 flex flex-col justify-between">
-        <CaptainDetails />
-      </div>
-      <div
-        ref={ridePopUpPanelRef}
-        className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
-      >
-        <RidePopUp
-          ride={ride}
-          confirmRide={confirmRide}
-          setRidePopUpPanel={setRidePopUpPanel}
-          setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
-        />
-      </div>
-      <div
-        ref={confirmRidePopUpPanelRef}
-        className="fixed w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
-      >
-        <ConfirmRidePopUp
-          ride={ride}
-          setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
-          setRidePopUpPanel={setRidePopUpPanel}
-        />
+          <RidePopUp
+            ride={ride}
+            confirmRide={confirmRide}
+            setRidePopUpPanel={setRidePopUpPanel}
+            setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
+          />
+        </div>
+        <div
+          ref={confirmRidePopUpPanelRef}
+          className="absolute w-full z-10 bottom-0 px-3 py-6 pt-12 bg-white"
+        >
+          <ConfirmRidePopUp
+            ride={ride}
+            setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
+            setRidePopUpPanel={setRidePopUpPanel}
+          />
+        </div>
       </div>
     </div>
   );
