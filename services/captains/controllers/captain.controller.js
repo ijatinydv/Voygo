@@ -69,3 +69,17 @@ module.exports.logoutCaptain = async (req, res, next) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logout successfully" });
 };
+
+module.exports.getCaptainById = async (req, res, next) => {
+  const captainId = req.params.id;
+  try {
+    const captain = await captainModel.findById(captainId).select('-password');
+    if (!captain) {
+      return res.status(404).json({ message: "Captain not found" });
+    }
+    res.status(200).json(captain);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

@@ -28,4 +28,6 @@ router.get('/profile',authMiddleware.authCaptain,captainController.getCaptainPro
 
 router.get('/logout',authMiddleware.authCaptain, captainController.logoutCaptain)
 
+router.get('/:id',captainController.getCaptainById)
+
 module.exports = router
