@@ -1,5 +1,19 @@
-const express = require('express');
+require("dotenv").config();
+const cors = require("cors");
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const connectToDB = require("./db/db");
+const captainRoutes = require("./routes/captain.routes");
+
+connectToDB();
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use("/", captainRoutes);
 
 module.exports = app;
