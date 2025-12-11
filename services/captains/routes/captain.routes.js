@@ -30,4 +30,6 @@ router.get('/logout',authMiddleware.authCaptain, captainController.logoutCaptain
 
 router.get('/:id',captainController.getCaptainById)
 
+router.get('/nearby-captains',authMiddleware.authUser,captainController.getNearbyCaptains)
+
 module.exports = router

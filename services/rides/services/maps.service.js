@@ -78,7 +78,7 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
 
 module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
   try{
-    const response = await axios.get(`${CAPTAIN_SERVICE_URL}/captains/nearby`, {
+    const response = await axios.get(`${CAPTAIN_SERVICE_URL}/nearby-captains`, {
       ltd,
       lng,
       radius
@@ -89,13 +89,4 @@ module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
     console.log("Error fetching captains in radius:", err.message);
     throw err;
   }
-  const captains = await captianModel.find({
-    location: {
-      $geoWithin: {
-        $centerSphere: [[ltd, lng], radius / 6371],
-      },
-    },
-  });
-
-  return captains;
 };

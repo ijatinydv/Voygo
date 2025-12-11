@@ -16,3 +16,17 @@ module.exports.createCaptian = async function({
     })
     return captain
 }
+
+module.exports.findNearbyCaptains = async({ltd,lng,radiusInKm})=>{
+    if(!ltd || !lng || !radiusInKm){
+        throw new Error("All fields are required")
+    }
+    const captains = await captianModel.find({
+        location:{
+            $geoWithin:{
+                $centerSphere:[[ltd,lng], radiusInKm/6371]
+            }
+        }
+    })
+    return captains
+}
