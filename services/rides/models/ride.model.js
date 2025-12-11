@@ -1,0 +1,59 @@
+const mongoose = require("mongoose");
+
+const rideSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  captain: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  pickup: {
+    type: String,
+    required: true,
+  },
+  destination: {
+    type: String,
+    required: true,
+  },
+  distance: {
+    type: String,
+  },
+  duration: {
+    type: String,
+  },
+  fare: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "ongoing", "completed", "cancelled"],
+    default: "pending",
+  },
+  duration: {
+    type: Number,
+  },
+  distance: {
+    type: Number,
+  },
+
+  paymentID: {
+    type: String,
+  },
+  orderID: {
+    type: String,
+  },
+  signature: {
+    type: String,
+  },
+  otp: {
+    type: String,
+    selected: false,
+    required: true,
+  },
+});
+
+const rideModel = mongoose.model("ride", rideSchema);
+
+module.exports = rideModel;
