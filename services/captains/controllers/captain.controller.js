@@ -87,11 +87,11 @@ module.exports.getCaptainById = async (req, res, next) => {
 module.exports.getNearbyCaptains = async (req, res, next) => {
   const { latitude, longitude, radius } = req.query;
   try {
-    const captains = await captainService.findNearbyCaptains(
-      parseFloat(latitude),
-      parseFloat(longitude),
-      parseFloat(radius)
-    );
+    const captains = await captainService.findNearbyCaptains({
+      ltd: parseFloat(latitude),
+      lng: parseFloat(longitude),
+      radiusInKm: parseFloat(radius)
+    });
     res.status(200).json(captains);
   } catch (error) {
     console.log(error);
