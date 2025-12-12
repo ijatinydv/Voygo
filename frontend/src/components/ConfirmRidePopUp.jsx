@@ -23,6 +23,23 @@ const ConfirmRidePopUp = (props) => {
     }
   };
 
+  const RideCancelHandler = async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/rides/cancel-ride?rideId=${
+        props.ride._id
+      }`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      props.setConfirmRidePopUpPanel(false);
+      props.setRidePopUpPanel(false);
+    }
+  };
+
   return (
     <div>
       <h5
@@ -89,10 +106,7 @@ const ConfirmRidePopUp = (props) => {
                 Confirm
               </button>
               <button
-                onClick={() => {
-                  props.setConfirmRidePopUpPanel(false);
-                  props.setRidePopUpPanel(false);
-                }}
+                onClick={RideCancelHandler}
                 className="mt-3 w-full bg-red-500 rounded-lg p-2 cursor-pointer text-lg text-white font-semibold"
               >
                 Cancel

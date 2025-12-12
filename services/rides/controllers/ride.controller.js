@@ -179,3 +179,30 @@ module.exports.endRide = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+module.exports.cancelRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.query;
+  try {
+    const ride = await rideService.cancelRide({
+      rideId,
+      captainId: req.captain._id,
+    });
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/${ride.user}`);
+    const user = userResponse.data;
+    const rideData = {
+      ...ride.toObject(),
+      user: user,
+    };
+    sendMessageToSocketId(ride.user.socketId, {
+      event: "ride-cancelled",
+      data: rideData,
+    });
+    return res.status(200).json(rideData);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};

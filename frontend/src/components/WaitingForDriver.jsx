@@ -1,6 +1,17 @@
 import React from "react";
+import {SocketContext} from '../context/SocketContext'
+import { useNavigate } from "react-router-dom";
+
 
 const WaitingForDriver = (props) => {
+  const {socket} = React.useContext(SocketContext);
+  const navigate = useNavigate()
+
+  socket.on("ride-cancelled", ()=>{
+    props.setWaitingForDriver(false);
+    navigate("/home")
+  });
+
   return (
     <div>
       <h5

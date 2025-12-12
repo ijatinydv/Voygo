@@ -133,3 +133,26 @@ module.exports.endRide = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+module.exports.cancelRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.query;
+
+  try {
+    const ride = await rideService.cancelRide({
+      rideId,
+      captainId: req.captain._id,
+    });
+    sendMessageToSocketId(ride.user.socketId, {
+      event: "ride-cancelled",
+      data: ride,
+    });
+
+    return res.status(200).json(ride);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};

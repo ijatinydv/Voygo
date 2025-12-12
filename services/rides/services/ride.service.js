@@ -177,3 +177,29 @@ module.exports.endRide = async ({ rideId, captainId }) => {
 
   return updatedRide;
 };
+
+module.exports.cancelRide = async ({ rideId, captainId }) => {
+  if (!rideId) {
+    throw new Error("RideId is required");
+  }
+  const ride = await rideModel.findOne({ _id: rideId });
+  if (!ride) {
+    throw new Error("Ride not found");
+  }
+  if (ride.status === "completed" || ride.status === "cancelled") {
+    throw new Error("Ride cannot be cancelled");
+  }
+  if (ride.captain._id.toString() !== captainId.toString()) {
+    throw new Error("You are not authorized to cancel this ride");
+  }
+  const updatedRide = await rideModel.findOneAndUpdate(
+    {
+      _id: rideId,
+    },
+    {
+      status: "cancelled",
+    },
+    { new: true }
+  );
+  return updatedRide;
+};

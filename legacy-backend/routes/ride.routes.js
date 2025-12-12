@@ -59,4 +59,11 @@ router.post(
   rideController.endRide
 );
 
+router.get(
+  "/cancel-ride",
+  authMiddleware.authCaptain,
+  query("rideId").isMongoId().withMessage("Invalid ride Id"),
+  rideController.cancelRide
+);
+
 module.exports = router;
