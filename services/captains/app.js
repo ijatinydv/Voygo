@@ -14,6 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use("/", captainRoutes);
+app.use("/captains", captainRoutes);
 
 module.exports = app;
