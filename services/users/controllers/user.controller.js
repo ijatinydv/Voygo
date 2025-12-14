@@ -76,7 +76,7 @@ module.exports.logoutUser = async (req, res, next) => {
 module.exports.getUserById = async (req, res, next) => {
   const userId = req.params.id;
   try {
-    const user = await userModel.findById(userId).select('-password');
+    const user = await userModel.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -84,5 +84,22 @@ module.exports.getUserById = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports.updateUserById = async (req, res, next) => {
+  const userId = req.params.id;
+  const updateData = req.body;
+  try {
+    const user = await userModel
+      .findByIdAndUpdate(userId, updateData, { new: true })
+      .select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Error: error.message });
   }
 };

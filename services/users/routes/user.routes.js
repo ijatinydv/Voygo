@@ -21,4 +21,6 @@ router.get('/logout',authMiddleware.authUser,userController.logoutUser)
 
 router.get('/:id',userController.getUserById)
 
+router.patch('/:id', userController.updateUserById)
+
 module.exports = router

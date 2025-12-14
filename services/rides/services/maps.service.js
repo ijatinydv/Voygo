@@ -1,5 +1,4 @@
 const axios = require("axios");
-const captianModel = require("../models/captain.model");
 
 const CAPTAIN_SERVICE_URL = process.env.CAPTAIN_SERVICE_URL;
 

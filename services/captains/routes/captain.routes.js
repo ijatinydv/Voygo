@@ -32,4 +32,6 @@ router.get('/:id',captainController.getCaptainById)
 
 router.get('/nearby-captains',captainController.getNearbyCaptains)
 
+router.patch('/:id', captainController.updateCaptainById)
+
 module.exports = router

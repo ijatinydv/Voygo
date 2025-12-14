@@ -65,7 +65,7 @@ module.exports.getCaptainProfile = async (req, res, next) => {
 
 module.exports.logoutCaptain = async (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization.split(" ")[1];
-  await blackListTokenModel.create({token});
+  await blackListTokenModel.create({ token });
   res.clearCookie("token");
   res.status(200).json({ message: "Logout successfully" });
 };
@@ -73,7 +73,7 @@ module.exports.logoutCaptain = async (req, res, next) => {
 module.exports.getCaptainById = async (req, res, next) => {
   const captainId = req.params.id;
   try {
-    const captain = await captainModel.findById(captainId).select('-password');
+    const captain = await captainModel.findById(captainId).select("-password");
     if (!captain) {
       return res.status(404).json({ message: "Captain not found" });
     }
@@ -90,11 +90,28 @@ module.exports.getNearbyCaptains = async (req, res, next) => {
     const captains = await captainService.findNearbyCaptains({
       ltd: parseFloat(latitude),
       lng: parseFloat(longitude),
-      radiusInKm: parseFloat(radius)
+      radiusInKm: parseFloat(radius),
     });
     res.status(200).json(captains);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error in finding captains" });
+  }
+};
+
+module.exports.updateCaptainById = async (req, res, next) => {
+  const captainId = req.params.id;
+  const updateData = req.body;
+  try {
+    const captain = await captainModel
+      .findByIdAndUpdate(captainId, updateData, { new: true })
+      .select("-password");
+    if (!captain) {
+      return res.status(404).json({ message: "Captain not found" });
+    }
+    res.status(200).json(captain);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Error: error.message });
   }
 };

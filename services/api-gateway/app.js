@@ -2,6 +2,7 @@ const express = require("express");
 const proxy = require("express-http-proxy");
 require("dotenv").config();
 const cors = require("cors");
+const { notify } = require("./socket");
 
 const app = express();
 
@@ -44,5 +45,11 @@ app.use(
     },
   })
 );
+
+app.post("/socket-notify", (req, res) => {
+  const { socketId, event, data } = req.body;
+  notify(socketId, event, data);
+  res.status(200).json({ message: "Notification sent" });
+});
 
 module.exports = app;
