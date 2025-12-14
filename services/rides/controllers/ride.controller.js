@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const rideService = require("../services/ride.service");
 const mapService = require("../services/maps.service");
 const { sendMessageToSocketId } = require("../socket");
-const rideModel = require("../models/ride.model");
+const axios = require("axios");
 
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
 const CAPTAIN_SERVICE_URL = process.env.CAPTAIN_SERVICE_URL;
@@ -23,15 +23,13 @@ module.exports.createRide = async (req, res) => {
       vehicleType,
     });
 
-    const userResponse = await axios.get(`${USER_SERVICE_URL}/${req.user._id}`);
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/users/${req.user._id}`);
     const user = userResponse.data;
 
     const rideWithUser = {
       ...ride.toObject(),
       user: user,
     };
-
-    res.status(200).json(rideWithUser);
 
     const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
     const captainsInRadius = await mapService.getCaptainsInTheRadius(
@@ -51,6 +49,8 @@ module.exports.createRide = async (req, res) => {
         data: rideDataForCaptain,
       });
     });
+
+    res.status(200).json(rideWithUser);
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: err.message });
@@ -84,10 +84,10 @@ module.exports.confirmRide = async (req, res) => {
   try {
     const ride = await rideService.confirmRide({ rideId, captainId });
 
-    const userResponse = await axios.get(`${USER_SERVICE_URL}/${ride.user}`);
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/users/${ride.user}`);
     const user = userResponse.data;
 
-    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/${captainId}`);
+    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/captains/${captainId}`);
     const captain = captainResponse.data;
 
     const rideData = {
@@ -96,7 +96,7 @@ module.exports.confirmRide = async (req, res) => {
       captain: captain,
     };
 
-    sendMessageToSocketId(ride.user.socketId, {
+    sendMessageToSocketId(user.socketId, {
       event: "ride-confirmed",
       data: rideData,
     });
@@ -121,10 +121,10 @@ module.exports.startRide = async (req, res) => {
       captainId: req.captain._id,
     });
     
-    const userResponse = await axios.get(`${USER_SERVICE_URL}/${ride.user}`);
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/users/${ride.user}`);
     const user = userResponse.data;
 
-    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/${req.captain._id}`);
+    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/captains/${req.captain._id}`);
     const captain = captainResponse.data;
 
     const rideData = {
@@ -133,7 +133,7 @@ module.exports.startRide = async (req, res) => {
       captain: captain,
     };
 
-    sendMessageToSocketId(ride.user.socketId, {
+    sendMessageToSocketId(user.socketId, {
       event: "ride-started",
       data: rideData,
     });
@@ -157,10 +157,10 @@ module.exports.endRide = async (req, res) => {
       captainId: req.captain._id,
     });
 
-    const userResponse = await axios.get(`${USER_SERVICE_URL}/${ride.user}`);
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/users/${ride.user}`);
     const user = userResponse.data;
 
-    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/${req.captain._id}`);
+    const captainResponse = await axios.get(`${CAPTAIN_SERVICE_URL}/captains/${req.captain._id}`);
     const captain = captainResponse.data;
 
     const rideData = {
@@ -169,7 +169,7 @@ module.exports.endRide = async (req, res) => {
       captain: captain,
     };
 
-    sendMessageToSocketId(ride.user.socketId, {
+    sendMessageToSocketId(user.socketId, {
       event: "ride-ended",
       data: rideData,
     });
@@ -191,13 +191,13 @@ module.exports.cancelRide = async (req, res) => {
       rideId,
       captainId: req.captain._id,
     });
-    const userResponse = await axios.get(`${USER_SERVICE_URL}/${ride.user}`);
+    const userResponse = await axios.get(`${USER_SERVICE_URL}/users/${ride.user}`);
     const user = userResponse.data;
     const rideData = {
       ...ride.toObject(),
       user: user,
     };
-    sendMessageToSocketId(ride.user.socketId, {
+    sendMessageToSocketId(user.socketId, {
       event: "ride-cancelled",
       data: rideData,
     });

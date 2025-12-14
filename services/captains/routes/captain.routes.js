@@ -28,9 +28,9 @@ router.get('/profile',authMiddleware.authCaptain,captainController.getCaptainPro
 
 router.get('/logout',authMiddleware.authCaptain, captainController.logoutCaptain)
 
-router.get('/:id',captainController.getCaptainById)
-
 router.get('/nearby-captains',captainController.getNearbyCaptains)
+
+router.get('/:id',captainController.getCaptainById)
 
 router.patch('/:id', captainController.updateCaptainById)
 

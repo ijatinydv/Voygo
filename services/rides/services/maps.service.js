@@ -33,17 +33,21 @@ module.exports.getDistanceTime = async (origin, destination) => {
 
   const apiKey = process.env.GOOGLE_MAPS_API;
 
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${apiKey}`;
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
+    
     if (response.data.status === "OK") {
       if (response.data.rows[0].elements[0].status === "ZERO_RESULTS") {
-        throw new Error("No routes found");
+        throw new Error("No routes found between the specified locations");
+      }
+      if (response.data.rows[0].elements[0].status === "NOT_FOUND") {
+        throw new Error("One or both locations could not be found");
       }
       return response.data.rows[0].elements[0];
     } else {
-      throw new Error("Unable to fetch distance and time");
+      throw new Error(`Unable to fetch distance and time: ${response.data.status}`);
     }
   } catch (err) {
     console.log(err);
@@ -77,10 +81,12 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
 
 module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
   try{
-    const response = await axios.get(`${CAPTAIN_SERVICE_URL}/nearby-captains`, {
-      ltd,
-      lng,
-      radius
+    const response = await axios.get(`${CAPTAIN_SERVICE_URL}/captains/nearby-captains`, {
+      params: {
+        latitude: ltd,
+        longitude: lng,
+        radius: radius
+      }
     });
     return response.data;
   }
