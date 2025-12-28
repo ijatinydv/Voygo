@@ -13,6 +13,7 @@ const blackListTokenSchema = new mongoose.Schema({
     }
 })
 
-const blackListTokenModel = mongoose.model("blackListToken",blackListTokenSchema)
+// Use existing model if already compiled, otherwise create new one
+const blackListTokenModel = mongoose.models.blackListToken || mongoose.model("blackListToken", blackListTokenSchema)
 
 module.exports = blackListTokenModel
